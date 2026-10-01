@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Teka Teki Silang</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand">🧩 <span>Teka Teki Silang</span></div>
+      <button id="themeBtn" class="icon-btn" aria-label="Mode gelap">🌙</button>
+    </header>
+
+    <section class="hero">
+      <div class="streak">🔥 <b id="streak">0</b> hari berturut-turut</div>
+      <h1>TTS Hari Ini</h1>
+      <p>Asah logika, tambah skor, dan kumpulkan koin bantuan.</p>
+    </section>
+
+    <section class="stats">
+      <div><span>🪙</span><b id="coins">50</b><small>Koin</small></div>
+      <div><span>🏆</span><b id="score">0</b><small>Skor</small></div>
+      <div><span>💡</span><b>3</b><small>Petunjuk</small></div>
+    </section>
+
+    <button id="startBtn" class="primary">▶ Mulai TTS</button>
+
+    <section class="menu">
+      <button>📅 TTS Harian</button>
+      <button>🏆 Leaderboard</button>
+      <button>🪙 Koin & Bantuan</button>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
