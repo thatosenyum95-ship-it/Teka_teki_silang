@@ -9,14 +9,49 @@
 </head>
 <body>
 <main class="app">
-<header class="topbar"><div><div class="eyebrow">🧩 TEKA TEKI SILANG</div><h1>Level <span id="levelNumber">1</span> / 500</h1></div><button id="themeButton" class="icon-button">🌙</button></header>
-<section class="stats"><div class="stat"><strong id="streak">0</strong><span>🔥 Streak</span></div><div class="stat"><strong id="coins">100</strong><span>🪙 Koin</span></div><div class="stat"><strong id="score">0</strong><span>🏆 Skor</span></div></section>
+<header class="topbar">
+  <div>
+    <div class="eyebrow">🧩 TEKA TEKI SILANG</div>
+    <h1>Level <span id="levelNumber">1</span> / 500</h1>
+  </div>
+  <button id="themeButton" class="icon-button" aria-label="Mode gelap">🌙</button>
+</header>
+
+<section class="stats">
+  <div class="stat"><strong id="streak">0</strong><span>🔥 Streak</span></div>
+  <div class="stat"><strong id="coins">100</strong><span>🪙 Koin</span></div>
+  <div class="stat"><strong id="score">0</strong><span>⭐ Poin</span></div>
+</section>
+
 <section class="game">
-<div class="game-head"><span class="badge" id="difficulty">🟢 Pemula</span><p id="progress">0 / 3 terjawab</p></div>
-<div id="grid" class="grid" aria-label="Kotak TTS"></div>
-<div class="clues"><h2>Petunjuk</h2><button class="clue" data-answer="API"><b>1.</b> Sumber panas dan cahaya dari pembakaran</button><button class="clue" data-answer="AIR"><b>2.</b> Cairan yang kita minum setiap hari</button><button class="clue" data-answer="KUCING"><b>3.</b> Hewan peliharaan yang suka mengeong</button></div>
-<button id="checkButton" class="primary-button">✓ Periksa Jawaban</button><button id="nextButton" class="secondary-button" hidden>➡️ Level Berikutnya</button>
-<p id="message" class="message" role="status"></p>
+  <div class="game-head">
+    <span class="badge" id="difficulty">🟢 Pemula</span>
+    <p id="progress">0 / 10 terjawab</p>
+  </div>
+
+  <div class="active-clue" id="activeClue">
+    <span class="active-number" id="activeNumber">1</span>
+    <div>
+      <strong id="activeDirection">Mendatar</strong>
+      <p id="activeText">Tekan salah satu kotak untuk melihat soal.</p>
+    </div>
+  </div>
+
+  <div id="grid" class="grid" aria-label="Papan Teka Teki Silang"></div>
+
+  <div class="controls">
+    <button id="hintButton" class="hint-button">💡 Petunjuk <span>-5 poin</span></button>
+    <button id="directionButton" class="direction-button" hidden>↔ Ganti arah</button>
+  </div>
+
+  <div class="clues">
+    <h2>Soal</h2>
+    <div id="clueList"></div>
+  </div>
+
+  <button id="checkButton" class="primary-button">✓ Periksa Jawaban</button>
+  <button id="nextButton" class="secondary-button" hidden>➡️ Level Berikutnya</button>
+  <p id="message" class="message" role="status"></p>
 </section>
 </main>
 <script src="app.js"></script>
