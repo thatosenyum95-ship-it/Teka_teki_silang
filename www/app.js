@@ -7,8 +7,10 @@ const state=saved||{
   score:old&&old.score||0,
   streak:old&&old.streak||0,
   dark:old&&old.dark||false,
-  completed:old&&old.completed||[]
+  completed:old&&old.completed||[],
+  levelBonuses:old&&old.levelBonuses||[]
 };
+if(!Array.isArray(state.levelBonuses))state.levelBonuses=[];
 if(!Array.isArray(state.completed))state.completed=[];
 
 const WORDS=[
@@ -17,6 +19,15 @@ const WORDS=[
 
 const $=function(id){return document.getElementById(id)};
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function giveLevelStartBonus(){
+  const level=state.level;
+  if(state.levelBonuses.includes(level))return;
+  state.score+=20;
+  state.levelBonuses.push(level);
+  save();
+  $("message").textContent="⭐ Bonus awal level +20 poin!";
+}
+
 function difficulty(){
  if(state.level<=50)return"🟢 Pemula";
  if(state.level<=100)return"🟡 Mudah";
@@ -333,6 +344,17 @@ function hint(){
  moveWithinWord(pos[0],pos[1],1);
 }
 function check(){
+ let allFilled=true;
+ puzzle.words.forEach(function(w){
+  wordCells(w).forEach(function(pos){
+   const el=cellEls[pos[0]+"_"+pos[1]];
+   if(!el||!el.value)allFilled=false;
+  });
+ });
+ if(!allFilled){
+  $("message").textContent="⚠️ Semua jawaban belum diisi. Lengkapi dulu sebelum diperiksa.";
+  return;
+ }
  let all=true;
  puzzle.words.forEach(function(w){
   wordCells(w).forEach(function(pos,i){
@@ -351,7 +373,24 @@ function check(){
   save();
  }else $("message").textContent="✅ Level ini sudah selesai.";
  $("score").textContent=state.score;$("streak").textContent=state.streak;
- $("nextButton").hidden=false;
+ if(state.level<500){
+  $("nextButton").hidden=true;
+  $("message").textContent="✅ Benar! Level selesai. Membuka level berikutnya...";
+  setTimeout(function(){
+   state.level++;
+   save();
+   puzzle=state.level<=5?fixedPuzzle(state.level):generatePuzzle();
+   selectedIndex=0;
+   selectedDir="right";
+   $("message").textContent="";
+   render();
+   giveLevelStartBonus();
+   $("score").textContent=state.score;
+  },900);
+ }else{
+  $("nextButton").hidden=false;
+  $("message").textContent="👑 Benar! Kamu menyelesaikan Level 500.";
+ }
 }
 $("hintButton").addEventListener("click",hint);
 $("checkButton").addEventListener("click",check);
@@ -364,7 +403,15 @@ $("directionButton").addEventListener("click",function(){
 });
 $("nextButton").addEventListener("click",function(){
  if(state.level>=500){$("message").textContent="👑 Kamu sudah mencapai Level 500!";return}
- state.level++;save();puzzle=state.level<=5?fixedPuzzle(state.level):generatePuzzle();selectedIndex=0;selectedDir="right";$("message").textContent="";render();
+ state.level++;
+ save();
+ puzzle=state.level<=5?fixedPuzzle(state.level):generatePuzzle();
+ selectedIndex=0;
+ selectedDir="right";
+ $("message").textContent="";
+ render();
+ giveLevelStartBonus();
+ $("score").textContent=state.score;
 });
 $("themeButton").addEventListener("click",function(){state.dark=!state.dark;save();render()});
 render();
