@@ -272,7 +272,7 @@ function numberWords(){
 }
 function render(){
  $("levelNumber").textContent=state.level;
- $("coins").textContent=state.coins;
+ $("points").textContent=state.coins;
  $("score").textContent=state.score;
  $("streak").textContent=state.streak;
  $("difficulty").textContent=difficulty();
@@ -417,7 +417,7 @@ function check(){
   else $("message").textContent="🎉 Level selesai! Semua jawaban benar.";
   save();
  }else $("message").textContent="✅ Level ini sudah selesai.";
- $("score").textContent=state.score;$("streak").textContent=state.streak;
+ $("score").textContent=state.score;$("points").textContent=state.coins;$("streak").textContent=state.streak;
  if(state.level<500){
   $("nextButton").hidden=true;
   $("message").textContent="✅ Benar! Level selesai. Membuka level berikutnya...";
