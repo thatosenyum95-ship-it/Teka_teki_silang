@@ -191,25 +191,9 @@ function generatePuzzle(){
 }
 
 const FIXED_LEVELS={
-1:{rows:13,cols:14,words:[
- ["GUNUNG",4,7,"right"],["BUAH",3,8,"down"],["AWAN",1,11,"down"],["KOTA",1,8,"right"],["AYAH",6,5,"right"],
- ["NASI",5,5,"down"],["KURSI",8,1,"right"],["TELUR",4,3,"down"],["ULAR",8,2,"down"],["PADI",10,1,"right"]
-]},
-2:{rows:12,cols:14,words:[
- ["LAMPU",4,1,"right"],["SATE",3,2,"down"],["ULAR",4,5,"down"],["ROTI",7,5,"right"],["KOPI",4,8,"down"],
- ["KURSI",4,8,"right"],["OBAT",7,6,"down"],["KACA",9,5,"right"],["TAHU",1,9,"down"],["APEL",2,9,"right"]
-]},
-3:{rows:13,cols:12,words:[
- ["PASIR",5,4,"right"],["BATU",4,5,"down"],["AKAR",2,8,"down"],["TIKUS",3,6,"right"],["DAUN",7,3,"right"],
- ["AYAH",7,4,"down"],["BUAH",10,1,"right"],["NAGA",7,6,"down"],["RUSA",1,10,"down"],["IBU",9,1,"down"]
-]},
-4:{rows:13,cols:14,words:[
- ["GUNUNG",7,4,"right"],["GARAM",7,4,"down"],["LAUT",5,7,"down"],["HUJAN",10,1,"right"],["ANGIN",5,9,"down"],
- ["AWAN",5,9,"right"],["SUNGAI",1,11,"down"],["ES",1,10,"right"],["GULA",8,1,"right"],["MADU",4,5,"down"]
-]},
-5:{rows:15,cols:11,words:[
- ["SEPEDA",7,3,"right"],["DAGING",7,7,"down"],["KAPAL",5,5,"down"],["MOBIL",9,1,"right"],["KEJU",5,5,"right"],
- ["SUSU",2,8,"down"],["TELUR",3,5,"right"],["KUE",1,6,"down"],["MOTOR",9,1,"down"],["MIE",10,6,"right"]
+1:{rows:15,cols:15,words:[
+ ["KOTA",7,5,"right"],["IKAN",6,5,"down"],["PADI",6,8,"down"],["NASI",9,5,"right"],["AYAH",9,6,"down"],
+ ["BUAH",12,3,"right"],["KURSI",6,1,"right"],["TELUR",2,3,"down"],["ULAR",6,2,"down"],["AWAN",11,6,"right"]
 ]}
 };
 function fixedPuzzle(level){
@@ -221,7 +205,7 @@ function fixedPuzzle(level){
  return {rows:f.rows,cols:f.cols,cells:cells,words:words};
 }
 
-let puzzle=state.level<=5?fixedPuzzle(state.level):generatePuzzle();
+let puzzle=state.level===1?fixedPuzzle(1):generatePuzzle();
 let selectedIndex=0;
 let selectedDir="right";
 let cellEls={};
@@ -440,7 +424,7 @@ function check(){
   setTimeout(function(){
    state.level++;
    save();
-   puzzle=state.level<=5?fixedPuzzle(state.level):generatePuzzle();
+   puzzle=state.level===1?fixedPuzzle(1):generatePuzzle();
    selectedIndex=0;
    selectedDir="right";
    $("message").textContent="";
@@ -464,7 +448,7 @@ $("nextButton").addEventListener("click",function(){
  if(state.level>=500){$("message").textContent="👑 Kamu sudah mencapai Level 500!";return}
  state.level++;
  save();
- puzzle=state.level<=5?fixedPuzzle(state.level):generatePuzzle();
+ puzzle=state.level===1?fixedPuzzle(1):generatePuzzle();
  selectedIndex=0;
  selectedDir="right";
  $("message").textContent="";
