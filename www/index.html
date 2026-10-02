@@ -1,44 +1,24 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#111827">
-  <title>Teka Teki Silang</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>Teka Teki Silang</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="app">
-    <header class="topbar">
-      <div>
-        <div class="eyebrow">🧩 TEKA TEKI SILANG</div>
-        <h1>Asah Otakmu</h1>
-      </div>
-      <button id="themeButton" class="icon-button" aria-label="Ganti tema">🌙</button>
-    </header>
-
-    <section class="hero">
-      <span class="badge">LEVEL 1 / 500</span>
-      <h2>TTS Hari Ini</h2>
-      <p>Mulai dari level pertama dan buka semua 500 level secara bertahap.</p>
-      <button id="startButton" class="primary-button">▶ Mulai Bermain</button>
-    </section>
-
-    <section class="stats">
-      <div class="stat"><strong id="streak">0</strong><span>🔥 Streak</span></div>
-      <div class="stat"><strong id="coins">100</strong><span>🪙 Koin</span></div>
-      <div class="stat"><strong id="score">0</strong><span>🏆 Skor</span></div>
-    </section>
-
-    <section class="menu">
-      <button class="menu-card" data-action="levels">🧩 <span><b>500 Level</b><small>Pilih level permainan</small></span>›</button>
-      <button class="menu-card" data-action="daily">📅 <span><b>TTS Harian</b><small>Tantangan baru setiap hari</small></span>›</button>
-      <button class="menu-card" data-action="hint">💡 <span><b>Petunjuk</b><small>Gunakan koin untuk bantuan</small></span>›</button>
-      <button class="menu-card" data-action="leaderboard">🏆 <span><b>Leaderboard</b><small>Lihat pencapaianmu</small></span>›</button>
-    </section>
-
-    <p id="message" class="message" role="status"></p>
-  </main>
-  <script src="app.js"></script>
+<main class="app">
+<header class="topbar"><div><div class="eyebrow">🧩 TEKA TEKI SILANG</div><h1>Level <span id="levelNumber">1</span> / 500</h1></div><button id="themeButton" class="icon-button">🌙</button></header>
+<section class="stats"><div class="stat"><strong id="streak">0</strong><span>🔥 Streak</span></div><div class="stat"><strong id="coins">100</strong><span>🪙 Koin</span></div><div class="stat"><strong id="score">0</strong><span>🏆 Skor</span></div></section>
+<section class="game">
+<div class="game-head"><span class="badge" id="difficulty">🟢 Pemula</span><p id="progress">0 / 3 terjawab</p></div>
+<div id="grid" class="grid" aria-label="Kotak TTS"></div>
+<div class="clues"><h2>Petunjuk</h2><button class="clue" data-answer="API"><b>1.</b> Sumber panas dan cahaya dari pembakaran</button><button class="clue" data-answer="AIR"><b>2.</b> Cairan yang kita minum setiap hari</button><button class="clue" data-answer="KUCING"><b>3.</b> Hewan peliharaan yang suka mengeong</button></div>
+<button id="checkButton" class="primary-button">✓ Periksa Jawaban</button><button id="nextButton" class="secondary-button" hidden>➡️ Level Berikutnya</button>
+<p id="message" class="message" role="status"></p>
+</section>
+</main>
+<script src="app.js"></script>
 </body>
 </html>

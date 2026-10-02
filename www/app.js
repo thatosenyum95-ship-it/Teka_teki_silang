@@ -1,45 +1,13 @@
-const state = {
-  coins: Number(localStorage.getItem("tts_coins") || 100),
-  score: Number(localStorage.getItem("tts_score") || 0),
-  streak: Number(localStorage.getItem("tts_streak") || 0),
-  dark: localStorage.getItem("tts_dark") === "1"
-};
-
-const $ = (id) => document.getElementById(id);
-
-function render() {
-  $("coins").textContent = state.coins;
-  $("score").textContent = state.score;
-  $("streak").textContent = state.streak;
-  document.body.classList.toggle("dark", state.dark);
-  $("themeButton").textContent = state.dark ? "☀️" : "🌙";
-}
-
-function message(text) {
-  $("message").textContent = text;
-}
-
-$("themeButton").addEventListener("click", () => {
-  state.dark = !state.dark;
-  localStorage.setItem("tts_dark", state.dark ? "1" : "0");
-  render();
-});
-
-$("startButton").addEventListener("click", () => {
-  message("🎮 Mesin permainan TTS sedang disiapkan. Level 1 akan menjadi level pertama yang dimainkan.");
-});
-
-document.querySelectorAll(".menu-card").forEach((button) => {
-  button.addEventListener("click", () => {
-    const action = button.dataset.action;
-    const labels = {
-      levels: "🧩 Daftar 500 level akan tersedia di sini.",
-      daily: "📅 TTS harian akan tersedia di sini.",
-      hint: "💡 Petunjuk akan menggunakan koin.",
-      leaderboard: "🏆 Leaderboard akan ditambahkan pada tahap berikutnya."
-    };
-    message(labels[action] || "");
-  });
-});
-
-render();
+const KEY="tts_v1";const state=JSON.parse(localStorage.getItem(KEY)||'{"level":1,"coins":100,"score":0,"streak":0,"dark":false}');
+const puzzle=[["A","P","I"],["A","I","R"],["K","U","C","I","N","G"]];
+const layout=[["A","P","I","#","#","#"],["A","#","R","#","#","#"],["I","I","U","C","I","N"],["#","#","C","#","#","#"],["#","#","I","#","#","#"],["#","#","N","#","#","#"]];
+const answers=[{start:[0,0],dir:"down",answer:"API",clue:1},{start:[1,0],dir:"right",answer:"AIR",clue:2},{start:[2,0],dir:"right",answer:"KUCING",clue:3}];
+const $=id=>document.getElementById(id);function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function difficulty(){if(state.level<=50)return"🟢 Pemula";if(state.level<=100)return"🟡 Mudah";if(state.level<=150)return"🟠 Menengah";if(state.level<=200)return"🔵 Menengah Atas";if(state.level<=250)return"🟣 Sulit";if(state.level<=300)return"🔴 Sangat Sulit";if(state.level<=350)return"⚫ Expert";if(state.level<=400)return"🔥 Master";if(state.level<=450)return"💎 Grand Master";return"👑 Legenda"}
+function render(){ $("levelNumber").textContent=state.level;$("coins").textContent=state.coins;$("score").textContent=state.score;$("streak").textContent=state.streak;$("difficulty").textContent=difficulty();document.body.classList.toggle("dark",state.dark);$("themeButton").textContent=state.dark?"☀️":"🌙";buildGrid()}
+function buildGrid(){const g=$("grid");g.innerHTML="";layout.forEach((row,r)=>row.forEach((v,c)=>{const el=document.createElement("input");el.className="cell";el.maxLength=1;el.autocomplete="off";el.dataset.r=r;el.dataset.c=c;if(v==="#"){el.classList.add("block");el.disabled=true}else{el.inputMode="text";el.addEventListener("input",()=>{el.value=el.value.toUpperCase().replace(/[^A-Z]/g,"").slice(-1);if(el.value)focusNext(r,c)})}g.appendChild(el)}));updateProgress()}
+function cell(r,c){return document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`)}
+function focusNext(r,c){let n=cell(r,c+1);if(!n||n.disabled){for(let rr=r+1;rr<6&&!n;rr++)for(let cc=0;cc<6;cc++){const x=cell(rr,cc);if(x&&!x.disabled&&!x.value){n=x;break}}}if(n)n.focus()}
+function updateProgress(){let done=0;answers.forEach(a=>{let ok=true;for(let i=0;i<a.answer.length;i++){const r=a.start[0]+(a.dir==="down"?i:0),c=a.start[1]+(a.dir==="right"?i:0);if(cell(r,c).value!==a.answer[i])ok=false}if(ok)done++});$("progress").textContent=`${done} / 3 terjawab`}
+function check(){let all=true;answers.forEach(a=>{for(let i=0;i<a.answer.length;i++){const r=a.start[0]+(a.dir==="down"?i:0),c=a.start[1]+(a.dir==="right"?i:0),el=cell(r,c);if(el.value===a.answer[i])el.classList.add("correct");else{el.classList.add("wrong");all=false}}});updateProgress();if(all){state.score+=100;state.coins+=10;state.streak+=1;save();$("message").textContent="🎉 Benar! +100 skor dan +10 koin. Level berikutnya terbuka!";$("nextButton").hidden=false;render()}else $("message").textContent="❌ Masih ada jawaban yang salah. Coba lagi!"}
+$("checkButton").addEventListener("click",check);$("nextButton").addEventListener("click",()=>{if(state.level<500){state.level++;save();$("message").textContent="";$("nextButton").hidden=true;render()}else $("message").textContent="👑 Kamu sudah mencapai Level 500!"});$("themeButton").addEventListener("click",()=>{state.dark=!state.dark;save();render()});document.querySelectorAll(".clue").forEach(b=>b.addEventListener("click",()=>{$("message").textContent=`💡 Jawaban terdiri dari ${b.dataset.answer.length} huruf.`;if(state.coins>0){state.coins--;save();$("coins").textContent=state.coins}}));render();
