@@ -480,8 +480,9 @@ document.querySelectorAll("#keyboard button").forEach(function(btn){
 render();
 $("introLevel").textContent=state.level;
 giveLevelStartBonus();
+// Splash singkat agar terasa seperti aplikasi normal tanpa menahan pengguna terlalu lama.
 setTimeout(function(){
   const intro=$("introScreen");
   if(intro)intro.classList.add("hide");
   document.body.classList.remove("splash-active");
-},1800);
+},500);
