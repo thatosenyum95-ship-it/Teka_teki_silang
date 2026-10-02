@@ -152,11 +152,26 @@ function generateFallback(candidates){
 }
 
 const FIXED_LEVELS={
-1:{rows:10,cols:9,words:[["AYAM",5,1,"right"],["IKAN",3,3,"down"],["PADI",3,0,"right"],["NASI",6,3,"right"],["SAPI",6,5,"down"],["KOTA",0,1,"down"],["BUKU",4,1,"right"],["BOLA",7,2,"right"],["API",4,6,"down"],["AIR",4,6,"right"]]},
-2:{rows:9,cols:10,words:[["KURSI",5,5,"right"],["LAMPU",1,6,"down"],["ROTI",5,7,"down"],["KOPI",5,5,"down"],["SATE",5,8,"down"],["APEL",1,3,"right"],["TAHU",0,3,"down"],["KACA",2,5,"right"],["ULAR",0,8,"down"],["OBAT",0,0,"right"]]},
-3:{rows:10,cols:8,words:[["TIKUS",5,2,"right"],["PASIR",2,3,"down"],["RUSA",4,5,"down"],["NAGA",7,4,"right"],["AYAH",3,3,"right"],["BUAH",0,6,"down"],["DAUN",6,7,"down"],["AKAR",6,0,"right"],["BATU",8,4,"right"],["IBU",1,4,"right"]]},
-4:{rows:10,cols:8,words:[["SUNGAI",2,0,"right"],["GUNUNG",2,3,"down"],["HUJAN",3,2,"right"],["ANGIN",4,2,"right"],["GARAM",7,3,"right"],["LAUT",0,1,"down"],["AWAN",1,1,"right"],["GULA",5,2,"right"],["MADU",6,6,"down"],["ES",1,0,"down"]]},
-5:{rows:11,cols:7,words:[["DAGING",7,1,"right"],["SEPEDA",3,1,"down"],["TELUR",4,0,"right"],["MOBIL",0,2,"down"],["MOTOR",0,4,"down"],["KAPAL",8,0,"right"],["SUSU",1,3,"down"],["KEJU",6,0,"right"],["MIE",0,4,"right"],["KUE",8,0,"down"]]}
+1:{rows:7,cols:10,words:[
+ ["AYAM",4,0,"right"],["BOLA",1,2,"down"],["BUKU",1,2,"right"],["KOTA",1,0,"down"],["IKAN",0,4,"down"],
+ ["NASI",3,4,"right"],["PADI",0,7,"down"],["SAPI",3,6,"down"],["AIR",1,7,"right"],["API",5,5,"right"]
+]},
+2:{rows:11,cols:8,words:[
+ ["ROTI",9,4,"right"],["SATE",7,6,"down"],["ULAR",6,4,"down"],["LAMPU",6,0,"right"],["OBAT",4,1,"down"],
+ ["KOPI",4,0,"right"],["KURSI",0,3,"down"],["KACA",0,3,"right"],["APEL",0,6,"down"],["TAHU",1,0,"right"]
+]},
+3:{rows:8,cols:12,words:[
+ ["PASIR",3,2,"right"],["BATU",2,3,"down"],["AKAR",0,6,"down"],["TIKUS",5,0,"right"],["BUAH",0,4,"right"],
+ ["AYAH",2,6,"right"],["DAUN",1,8,"down"],["NAGA",4,8,"right"],["RUSA",1,11,"down"],["IBU",5,1,"down"]
+]},
+4:{rows:9,cols:13,words:[
+ ["GUNUNG",4,3,"right"],["GARAM",4,3,"down"],["LAUT",7,2,"right"],["SUNGAI",1,8,"down"],["ES",1,7,"right"],
+ ["HUJAN",0,5,"down"],["ANGIN",5,8,"right"],["AWAN",2,12,"down"],["GULA",5,0,"right"],["MADU",1,2,"right"]
+]},
+5:{rows:13,cols:9,words:[
+ ["SEPEDA",6,2,"right"],["DAGING",6,6,"down"],["KAPAL",4,4,"down"],["MOBIL",8,0,"right"],["KEJU",4,4,"right"],
+ ["SUSU",1,7,"down"],["TELUR",2,4,"right"],["KUE",0,5,"down"],["MOTOR",8,0,"down"],["MIE",9,5,"right"]
+]}
 };
 function fixedPuzzle(level){
  const f=FIXED_LEVELS[level];
