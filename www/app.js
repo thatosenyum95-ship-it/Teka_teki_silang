@@ -277,7 +277,7 @@ function updateProgress(){
  let done=0;
  puzzle.words.forEach(function(w){
   let ok=true;
-  wordCells(w).forEach(function(pos,i){const el=cellEls[pos[0]+"_"+pos[1];if(!el||el.value!==w.answer[i])ok=false});
+  wordCells(w).forEach(function(pos,i){const el=cellEls[pos[0]+"_"+pos[1]];if(!el||el.value!==w.answer[i])ok=false});
   if(ok)done++;
  });
  $("progress").textContent=done+" / "+puzzle.words.length+" terjawab";
