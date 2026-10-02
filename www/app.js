@@ -410,4 +410,10 @@ $("nextButton").addEventListener("click",function(){
 });
 $("themeButton").addEventListener("click",function(){state.dark=!state.dark;save();render()});
 render();
+$("introLevel").textContent=state.level;
 giveLevelStartBonus();
+setTimeout(function(){
+  const intro=$("introScreen");
+  if(intro)intro.classList.add("hide");
+  document.body.classList.remove("splash-active");
+},1800);
