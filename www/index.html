@@ -19,23 +19,26 @@
 </section>
 <main class="app">
 <header class="topbar">
-  <div>
+  <div class="brand">
     <div class="eyebrow">🧩 TEKA TEKI SILANG</div>
-    <h1>Level <span id="levelNumber">1</span> / 500</h1>
+    <h1>Level <span id="levelNumber">1</span> <small>/ 500</small></h1>
   </div>
-  <button id="themeButton" class="icon-button" aria-label="Mode gelap">🌙</button>
+  <div class="top-actions">
+    <div class="mini-stat"><b id="score">0</b><span>⭐ Poin</span></div>
+    <div class="mini-stat"><b id="coins">100</b><span>🪙 Koin</span></div>
+    <button id="themeButton" class="icon-button" aria-label="Mode gelap">🌙</button>
+  </div>
 </header>
 
-<section class="stats">
-  <div class="stat"><strong id="streak">0</strong><span>🔥 Streak</span></div>
-  <div class="stat"><strong id="coins">100</strong><span>🪙 Koin</span></div>
-  <div class="stat"><strong id="score">0</strong><span>⭐ Poin</span></div>
+<section class="streak-strip">
+  <span>🔥 Streak</span><strong id="streak">0</strong>
+  <span class="strip-sep">•</span><span id="progress">0 / 10</span>
 </section>
 
 <section class="game">
   <div class="game-head">
     <span class="badge" id="difficulty">🟢 Pemula</span>
-    <p id="progress">0 / 10 terjawab</p>
+    <span class="board-label">Teka Teki Silang</span>
   </div>
 
   <div class="active-clue" id="activeClue">
@@ -53,8 +56,20 @@
     <button id="directionButton" class="direction-button" hidden>↔ Ganti arah</button>
   </div>
 
+  <div class="keyboard" id="keyboard" aria-label="Papan ketik huruf">
+    <div class="key-row">
+      <button data-key="Q">Q</button><button data-key="W">W</button><button data-key="E">E</button><button data-key="R">R</button><button data-key="T">T</button><button data-key="Y">Y</button><button data-key="U">U</button><button data-key="I">I</button><button data-key="O">O</button><button data-key="P">P</button>
+    </div>
+    <div class="key-row">
+      <button data-key="A">A</button><button data-key="S">S</button><button data-key="D">D</button><button data-key="F">F</button><button data-key="G">G</button><button data-key="H">H</button><button data-key="J">J</button><button data-key="K">K</button><button data-key="L">L</button>
+    </div>
+    <div class="key-row">
+      <button data-key="Z">Z</button><button data-key="X">X</button><button data-key="C">C</button><button data-key="V">V</button><button data-key="B">B</button><button data-key="N">N</button><button data-key="M">M</button><button data-key="BACK">⌫</button>
+    </div>
+  </div>
+
   <div class="clues">
-    <h2>Soal</h2>
+    <h2>Daftar Soal <span>Ketuk soal untuk memilih</span></h2>
     <div id="clueList"></div>
   </div>
 
