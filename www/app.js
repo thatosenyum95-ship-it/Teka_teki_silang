@@ -481,6 +481,7 @@ render();
 $("introLevel").textContent=state.level;
 giveLevelStartBonus();
 // Splash singkat agar terasa seperti aplikasi normal tanpa menahan pengguna terlalu lama.
+// Build trigger: latest UI/loading revision.
 setTimeout(function(){
   const intro=$("introScreen");
   if(intro)intro.classList.add("hide");
