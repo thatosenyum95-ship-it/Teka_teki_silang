@@ -414,4 +414,4 @@ $("nextButton").addEventListener("click",function(){
  $("score").textContent=state.score;
 });
 $("themeButton").addEventListener("click",function(){state.dark=!state.dark;save();render()});
-render();
+render();\ngiveLevelStartBonus();\n
