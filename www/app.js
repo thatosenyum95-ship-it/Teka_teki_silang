@@ -10,7 +10,6 @@ const state=saved||{
   completed:old&&old.completed||[],
   levelBonuses:old&&old.levelBonuses||[]
 };
-if(!Array.isArray(state.levelBonuses))state.levelBonuses=[];
 if(!Array.isArray(state.completed))state.completed=[];
 
 const WORDS=[
@@ -20,12 +19,12 @@ const WORDS=[
 const $=function(id){return document.getElementById(id)};
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function giveLevelStartBonus(){
-  const level=state.level;
-  if(state.levelBonuses.includes(level))return;
+  if(state.startBonusGiven)return;
   state.score+=20;
-  state.levelBonuses.push(level);
+  state.startBonusGiven=true;
   save();
-  $("message").textContent="⭐ Bonus awal level +20 poin!";
+  $("score").textContent=state.score;
+  $("message").textContent="⭐ Bonus awal permainan +20 poin!";
 }
 
 function difficulty(){
@@ -384,8 +383,6 @@ function check(){
    selectedDir="right";
    $("message").textContent="";
    render();
-   giveLevelStartBonus();
-   $("score").textContent=state.score;
   },900);
  }else{
   $("nextButton").hidden=false;
@@ -410,8 +407,6 @@ $("nextButton").addEventListener("click",function(){
  selectedDir="right";
  $("message").textContent="";
  render();
- giveLevelStartBonus();
- $("score").textContent=state.score;
 });
 $("themeButton").addEventListener("click",function(){state.dark=!state.dark;save();render()});
 render();\ngiveLevelStartBonus();\n
