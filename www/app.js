@@ -8,7 +8,7 @@ const state=saved||{
   streak:old&&old.streak||0,
   dark:old&&old.dark||false,
   completed:old&&old.completed||[],
-  levelBonuses:old&&old.levelBonuses||[]
+  startBonusGiven:old&&old.startBonusGiven||false
 };
 if(!Array.isArray(state.completed))state.completed=[];
 
@@ -409,4 +409,5 @@ $("nextButton").addEventListener("click",function(){
  render();
 });
 $("themeButton").addEventListener("click",function(){state.dark=!state.dark;save();render()});
-render();\ngiveLevelStartBonus();\n
+render();
+giveLevelStartBonus();
