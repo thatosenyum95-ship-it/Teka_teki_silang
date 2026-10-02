@@ -150,7 +150,24 @@ function generateFallback(candidates){
  }
  return {rows:rows,cols:cols,cells:board,words:words};
 }
-let puzzle=generatePuzzle();
+
+const FIXED_LEVELS={
+1:{rows:10,cols:9,words:[["AYAM",5,1,"right"],["IKAN",3,3,"down"],["PADI",3,0,"right"],["NASI",6,3,"right"],["SAPI",6,5,"down"],["KOTA",0,1,"down"],["BUKU",4,1,"right"],["BOLA",7,2,"right"],["API",4,6,"down"],["AIR",4,6,"right"]]},
+2:{rows:9,cols:10,words:[["KURSI",5,5,"right"],["LAMPU",1,6,"down"],["ROTI",5,7,"down"],["KOPI",5,5,"down"],["SATE",5,8,"down"],["APEL",1,3,"right"],["TAHU",0,3,"down"],["KACA",2,5,"right"],["ULAR",0,8,"down"],["OBAT",0,0,"right"]]},
+3:{rows:10,cols:8,words:[["TIKUS",5,2,"right"],["PASIR",2,3,"down"],["RUSA",4,5,"down"],["NAGA",7,4,"right"],["AYAH",3,3,"right"],["BUAH",0,6,"down"],["DAUN",6,7,"down"],["AKAR",6,0,"right"],["BATU",8,4,"right"],["IBU",1,4,"right"]]},
+4:{rows:10,cols:8,words:[["SUNGAI",2,0,"right"],["GUNUNG",2,3,"down"],["HUJAN",3,2,"right"],["ANGIN",4,2,"right"],["GARAM",7,3,"right"],["LAUT",0,1,"down"],["AWAN",1,1,"right"],["GULA",5,2,"right"],["MADU",6,6,"down"],["ES",1,0,"down"]]},
+5:{rows:11,cols:7,words:[["DAGING",7,1,"right"],["SEPEDA",3,1,"down"],["TELUR",4,0,"right"],["MOBIL",0,2,"down"],["MOTOR",0,4,"down"],["KAPAL",8,0,"right"],["SUSU",1,3,"down"],["KEJU",6,0,"right"],["MIE",0,4,"right"],["KUE",8,0,"down"]]}
+};
+function fixedPuzzle(level){
+ const f=FIXED_LEVELS[level];
+ const clueMap={};WORDS.forEach(function(x){clueMap[x[0]]=x[1]});
+ const words=f.words.map(function(x){return {answer:x[0],row:x[1],col:x[2],dir:x[3],clue:clueMap[x[0]]||"Lengkapi kata ini"}});
+ const cells=Array.from({length:f.rows},function(){return Array(f.cols).fill("")});
+ words.forEach(function(w){for(let i=0;i<w.answer.length;i++){const r=w.row+(w.dir==="down"?i:0),c=w.col+(w.dir==="right"?i:0);cells[r][c]=w.answer[i]}});
+ return {rows:f.rows,cols:f.cols,cells:cells,words:words};
+}
+
+let puzzle=state.level<=5?fixedPuzzle(state.level):generatePuzzle();
 let selectedIndex=0;
 let selectedDir="right";
 let cellEls={};
@@ -332,7 +349,7 @@ $("directionButton").addEventListener("click",function(){
 });
 $("nextButton").addEventListener("click",function(){
  if(state.level>=500){$("message").textContent="👑 Kamu sudah mencapai Level 500!";return}
- state.level++;save();puzzle=generatePuzzle();selectedIndex=0;selectedDir="right";$("message").textContent="";render();
+ state.level++;save();puzzle=state.level<=5?fixedPuzzle(state.level):generatePuzzle();selectedIndex=0;selectedDir="right";$("message").textContent="";render();
 });
 $("themeButton").addEventListener("click",function(){state.dark=!state.dark;save();render()});
 render();
