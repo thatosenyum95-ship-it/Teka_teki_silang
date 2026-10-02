@@ -81,70 +81,99 @@ function canPlace(board,word,row,col,dir){
  const dr=dir==="down"?1:0,dc=dir==="right"?1:0;
  const endR=row+dr*(word.length-1),endC=col+dc*(word.length-1);
  if(row<1||col<1||endR>=h-1||endC>=w-1)return false;
+
+ // A word must have a hard boundary before and after it.
+ const beforeR=row-dr,beforeC=col-dc;
+ const afterR=endR+dr,afterC=endC+dc;
+ if(board[beforeR][beforeC]!=="")return false;
+ if(board[afterR][afterC]!=="")return false;
+
  let crosses=0;
  for(let i=0;i<word.length;i++){
   const r=row+dr*i,c=col+dc*i,ch=board[r][c];
   if(ch!==""&&ch!==word[i])return false;
-  if(ch===word[i])crosses++;
-  const side=[[r-1,c],[r+1,c],[r,c-1],[r,c+1]];
-  if(ch===""){
-   for(let j=0;j<side.length;j++){
-    const rr=side[j][0],cc=side[j][1];
-    if(rr>=0&&rr<h&&cc>=0&&cc<w&&board[rr][cc]!==""){
-     if((dir==="right"&&(rr!==row||cc<col||cc>endC))||(dir==="down"&&(cc!==col||rr<row||rr>endR)))return false;
-    }
-   }
+
+  if(ch===word[i]&&ch!=="") {
+   crosses++;
+   continue;
+  }
+
+  // Empty cells may not touch another word sideways.
+  const side=dir==="right"
+    ? [[r-1,c],[r+1,c]]
+    : [[r,c-1],[r,c+1]];
+  for(let j=0;j<side.length;j++){
+   const rr=side[j][0],cc=side[j][1];
+   if(rr>=0&&rr<h&&cc>=0&&cc<w&&board[rr][cc]!=="")return false;
   }
  }
  return crosses>0;
-}
-function put(board,word,row,col,dir){
+}\nfunction put(board,word,row,col,dir){
  const dr=dir==="down"?1:0,dc=dir==="right"?1:0;
  for(let i=0;i<word.length;i++)board[row+dr*i][col+dc*i]=word[i];
 }
 function generatePuzzle(){
- const size=31,board=Array.from({length:size},function(){return Array(size).fill("")});
- const candidates=chooseWords().sort(function(a,b){return b[0].length-a[0].length});
- const placed=[];
- if(candidates.length===0)return {size:1,cells:[],words:[]};
- const first=candidates[0][0];
- const start=Math.floor(size/2)-Math.floor(first.length/2);
- put(board,first,start,start,"right");
- placed.push({answer:first,clue:candidates[0][1],row:start,col:start,dir:"right"});
- for(let k=1;k<candidates.length;k++){
-  const pair=candidates[k],word=pair[0];
-  let best=null;
-  for(let p=0;p<placed.length;p++){
-   const base=placed[p];
-   for(let i=0;i<word.length;i++)for(let j=0;j<base.answer.length;j++){
-    if(word[i]!==base.answer[j])continue;
-    const dir=base.dir==="right"?"down":"right";
-    const row=base.row+(base.dir==="down"?j:0)-(dir==="down"?i:0);
-    const col=base.col+(base.dir==="right"?j:0)-(dir==="right"?i:0);
-    if(canPlace(board,word,row,col,dir)){
-     const score=1+(word.length-i)/10;
-     if(!best||score>best.score)best={row:row,col:col,dir:dir,score:score}
+ const size=31;
+ const source=chooseWords();
+ let best=null;
+
+ // Try several deterministic orders. A valid crossword must interlock;
+ // words that merely sit beside each other are rejected.
+ for(let attempt=0;attempt<18;attempt++){
+  const random=rng(levelSeed()+attempt*104729);
+  const candidates=shuffle(source,random).sort(function(a,b){return b[0].length-a[0].length});
+  const board=Array.from({length:size},function(){return Array(size).fill("")});
+  const first=candidates[0];
+  const firstRow=Math.floor(size/2);
+  const firstCol=Math.floor((size-first[0].length)/2);
+  put(board,first[0],firstRow,firstCol,"right");
+  const placed=[{answer:first[0],clue:first[1],row:firstRow,col:firstCol,dir:"right"}];
+
+  for(let k=1;k<candidates.length;k++){
+   const pair=candidates[k],word=pair[0];
+   let options=[];
+   for(let p=0;p<placed.length;p++){
+    const base=placed[p];
+    for(let i=0;i<word.length;i++)for(let j=0;j<base.answer.length;j++){
+     if(word[i]!==base.answer[j])continue;
+     const dir=base.dir==="right"?"down":"right";
+     const row=base.row+(base.dir==="down"?j:0)-(dir==="down"?i:0);
+     const col=base.col+(base.dir==="right"?j:0)-(dir==="right"?i:0);
+     if(canPlace(board,word,row,col,dir)){
+      options.push({row:row,col:col,dir:dir,crosses:1});
+     }
     }
    }
+   if(options.length){
+    const pick=options[Math.floor(random()*options.length)];
+    put(board,word,pick.row,pick.col,pick.dir);
+    placed.push({answer:word,clue:pair[1],row:pick.row,col:pick.col,dir:pick.dir});
+   }
   }
-  if(best){
-   put(board,word,best.row,best.col,best.dir);
-   placed.push({answer:word,clue:pair[1],row:best.row,col:best.col,dir:best.dir});
-  }
+
+  if(!best||placed.length>best.words.length)best={board:board,words:placed};
+  if(placed.length===candidates.length)break;
  }
- if(placed.length<Math.min(5,candidates.length)){
-  return generateFallback(candidates);
- }
+
+ if(!best)return {rows:1,cols:1,cells:[[""]],words:[]};
+
  let minR=size,maxR=0,minC=size,maxC=0;
- for(let r=0;r<size;r++)for(let c=0;c<size;c++)if(board[r][c]!==""){minR=Math.min(minR,r);maxR=Math.max(maxR,r);minC=Math.min(minC,c);maxC=Math.max(maxC,c)}
- const pad=1;
- minR=Math.max(0,minR-pad);maxR=Math.min(size-1,maxR+pad);minC=Math.max(0,minC-pad);maxC=Math.min(size-1,maxC+pad);
+ best.words.forEach(function(w){
+  minR=Math.min(minR,w.row);
+  maxR=Math.max(maxR,w.row+(w.dir==="down"?w.answer.length-1:0));
+  minC=Math.min(minC,w.col);
+  maxC=Math.max(maxC,w.col+(w.dir==="right"?w.answer.length-1:0));
+ });
+ minR=Math.max(0,minR-1);maxR=Math.min(size-1,maxR+1);
+ minC=Math.max(0,minC-1);maxC=Math.min(size-1,maxC+1);
+
  const rows=maxR-minR+1,cols=maxC-minC+1;
- const cells=Array.from({length:rows},function(_,r){return Array.from({length:cols},function(_,c){return board[minR+r][minC+c]})});
- placed.forEach(function(x){x.row-=minR;x.col-=minC});
- return {rows:rows,cols:cols,cells:cells,words:placed};
-}
-function generateFallback(candidates){
+ const cells=Array.from({length:rows},function(_,r){
+  return Array.from({length:cols},function(_,c){return best.board[minR+r][minC+c]});
+ });
+ best.words.forEach(function(w){w.row-=minR;w.col-=minC});
+ return {rows:rows,cols:cols,cells:cells,words:best.words};
+}\nfunction generateFallback(candidates){
  const rows=1+Math.min(20,candidates.length)*2,cols=15;
  const board=Array.from({length:rows},function(){return Array(cols).fill("")});
  const words=[];
@@ -162,25 +191,25 @@ function generateFallback(candidates){
 }
 
 const FIXED_LEVELS={
-1:{rows:7,cols:10,words:[
- ["AYAM",4,0,"right"],["BOLA",1,2,"down"],["BUKU",1,2,"right"],["KOTA",1,0,"down"],["IKAN",0,4,"down"],
- ["NASI",3,4,"right"],["PADI",0,7,"down"],["SAPI",3,6,"down"],["AIR",1,7,"right"],["API",5,5,"right"]
+1:{rows:13,cols:14,words:[
+ ["GUNUNG",4,7,"right"],["BUAH",3,8,"down"],["AWAN",1,11,"down"],["KOTA",1,8,"right"],["AYAH",6,5,"right"],
+ ["NASI",5,5,"down"],["KURSI",8,1,"right"],["TELUR",4,3,"down"],["ULAR",8,2,"down"],["PADI",10,1,"right"]
 ]},
-2:{rows:11,cols:8,words:[
- ["ROTI",9,4,"right"],["SATE",7,6,"down"],["ULAR",6,4,"down"],["LAMPU",6,0,"right"],["OBAT",4,1,"down"],
- ["KOPI",4,0,"right"],["KURSI",0,3,"down"],["KACA",0,3,"right"],["APEL",0,6,"down"],["TAHU",1,0,"right"]
+2:{rows:12,cols:14,words:[
+ ["LAMPU",4,1,"right"],["SATE",3,2,"down"],["ULAR",4,5,"down"],["ROTI",7,5,"right"],["KOPI",4,8,"down"],
+ ["KURSI",4,8,"right"],["OBAT",7,6,"down"],["KACA",9,5,"right"],["TAHU",1,9,"down"],["APEL",2,9,"right"]
 ]},
-3:{rows:8,cols:12,words:[
- ["PASIR",3,2,"right"],["BATU",2,3,"down"],["AKAR",0,6,"down"],["TIKUS",5,0,"right"],["BUAH",0,4,"right"],
- ["AYAH",2,6,"right"],["DAUN",1,8,"down"],["NAGA",4,8,"right"],["RUSA",1,11,"down"],["IBU",5,1,"down"]
+3:{rows:13,cols:12,words:[
+ ["PASIR",5,4,"right"],["BATU",4,5,"down"],["AKAR",2,8,"down"],["TIKUS",3,6,"right"],["DAUN",7,3,"right"],
+ ["AYAH",7,4,"down"],["BUAH",10,1,"right"],["NAGA",7,6,"down"],["RUSA",1,10,"down"],["IBU",9,1,"down"]
 ]},
-4:{rows:9,cols:13,words:[
- ["GUNUNG",4,3,"right"],["GARAM",4,3,"down"],["LAUT",7,2,"right"],["SUNGAI",1,8,"down"],["ES",1,7,"right"],
- ["HUJAN",0,5,"down"],["ANGIN",5,8,"right"],["AWAN",2,12,"down"],["GULA",5,0,"right"],["MADU",1,2,"right"]
+4:{rows:13,cols:14,words:[
+ ["GUNUNG",7,4,"right"],["GARAM",7,4,"down"],["LAUT",5,7,"down"],["HUJAN",10,1,"right"],["ANGIN",5,9,"down"],
+ ["AWAN",5,9,"right"],["SUNGAI",1,11,"down"],["ES",1,10,"right"],["GULA",8,1,"right"],["MADU",4,5,"down"]
 ]},
-5:{rows:13,cols:9,words:[
- ["SEPEDA",6,2,"right"],["DAGING",6,6,"down"],["KAPAL",4,4,"down"],["MOBIL",8,0,"right"],["KEJU",4,4,"right"],
- ["SUSU",1,7,"down"],["TELUR",2,4,"right"],["KUE",0,5,"down"],["MOTOR",8,0,"down"],["MIE",9,5,"right"]
+5:{rows:15,cols:11,words:[
+ ["SEPEDA",7,3,"right"],["DAGING",7,7,"down"],["KAPAL",5,5,"down"],["MOBIL",9,1,"right"],["KEJU",5,5,"right"],
+ ["SUSU",2,8,"down"],["TELUR",3,5,"right"],["KUE",1,6,"down"],["MOTOR",9,1,"down"],["MIE",10,6,"right"]
 ]}
 };
 function fixedPuzzle(level){
