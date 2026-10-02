@@ -287,7 +287,7 @@ function render(){
 }
 function buildGrid(){
  const g=$("grid");g.innerHTML="";cellEls={};
- g.style.gridTemplateColumns="repeat("+puzzle.cols+",32px)";
+ g.style.gridTemplateColumns="repeat("+puzzle.cols+",minmax(0,1fr))";
  for(let r=0;r<puzzle.rows;r++)for(let c=0;c<puzzle.cols;c++){
   const wrap=document.createElement("div");wrap.className="cell-wrap";
   const value=puzzle.cells[r][c];
