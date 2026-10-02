@@ -227,7 +227,7 @@ function selectWord(index,dir){
  updateActiveClue();
  const first=wordCells(w)[0];
  const el=cellEls[first[0]+"_"+first[1]];
- if(el)el.focus();
+ if(el){el.classList.add("selected");el.focus();}
 }
 function selectCell(r,c){
  const found=findWordsAt(r,c);
@@ -280,7 +280,7 @@ function buildGrid(){
   const value=puzzle.cells[r][c];
   if(!value){wrap.classList.add("block");g.appendChild(wrap);continue}
   const input=document.createElement("input");
-  input.className="cell";input.maxLength=1;input.autocomplete="off";input.inputMode="text";
+  input.className="cell";input.maxLength=1;input.autocomplete="off";input.inputMode="none";
   input.dataset.r=r;input.dataset.c=c;
   input.addEventListener("focus",function(){selectCell(r,c)});
   input.addEventListener("click",function(){selectCell(r,c)});
@@ -302,8 +302,41 @@ function moveWithinWord(r,c,step){
  if(at<0)return;
  for(let i=at+step;i>=0&&i<positions.length;i+=step){
   const el=cellEls[positions[i][0]+"_"+positions[i][1]];
-  if(el){el.focus();break}
+  if(el){
+   Object.keys(cellEls).forEach(function(k){cellEls[k].classList.remove("selected")});
+   el.classList.add("selected");el.focus();break
+  }
  }
+}
+function typeLetter(letter){
+ const w=puzzle.words[selectedIndex]; if(!w)return;
+ const active=document.activeElement;
+ let pos=-1;
+ if(active&&active.dataset&&active.dataset.r!==undefined){
+   const r=Number(active.dataset.r),c=Number(active.dataset.c);
+   pos=wordCells(w).findIndex(function(p){return p[0]===r&&p[1]===c});
+ }
+ if(pos<0)pos=0;
+ const target=cellEls[wordCells(w)[pos][0]+"_"+wordCells(w)[pos][1]];
+ if(!target)return;
+ target.value=letter;
+ target.classList.remove("wrong","correct");
+ updateProgress();
+ moveWithinWord(wordCells(w)[pos][0],wordCells(w)[pos][1],1);
+}
+function eraseLetter(){
+ const w=puzzle.words[selectedIndex]; if(!w)return;
+ const active=document.activeElement;
+ if(!active||!active.dataset||active.dataset.r===undefined)return;
+ const r=Number(active.dataset.r),c=Number(active.dataset.c);
+ const positions=wordCells(w); let pos=positions.findIndex(function(p){return p[0]===r&&p[1]===c});
+ if(pos<0)return;
+ if(active.value){active.value="";active.classList.remove("wrong","correct");return}
+ if(pos>0){
+   const p=positions[pos-1],el=cellEls[p[0]+"_"+p[1]];
+   if(el){el.value="";el.classList.remove("wrong","correct");el.focus();Object.keys(cellEls).forEach(function(k){cellEls[k].classList.remove("selected")});el.classList.add("selected")}
+ }
+ updateProgress();
 }
 function buildClues(){
  const box=$("clueList");box.innerHTML="";
@@ -409,6 +442,12 @@ $("nextButton").addEventListener("click",function(){
  render();
 });
 $("themeButton").addEventListener("click",function(){state.dark=!state.dark;save();render()});
+document.querySelectorAll("#keyboard button").forEach(function(btn){
+ btn.addEventListener("click",function(){
+   const key=btn.dataset.key;
+   if(key==="BACK")eraseLetter(); else typeLetter(key);
+ });
+});
 render();
 $("introLevel").textContent=state.level;
 giveLevelStartBonus();
