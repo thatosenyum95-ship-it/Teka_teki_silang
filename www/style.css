@@ -50,3 +50,19 @@ body.splash-active .app{visibility:hidden}
 .intro-screen.hide{opacity:0;visibility:hidden;pointer-events:none}
 @keyframes intro-in{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
 @keyframes intro-load{0%{transform:translateX(-120%)}50%{transform:translateX(170%)}100%{transform:translateX(300%)}}
+
+/* Crossword-style mobile layout */
+.brand h1{font-size:22px;margin:3px 0}.brand h1 small{font-size:13px;opacity:.5;font-weight:700}
+.top-actions{display:flex;align-items:center;gap:6px}.mini-stat{min-width:48px;text-align:center}.mini-stat b,.mini-stat span{display:block}.mini-stat b{font-size:14px}.mini-stat span{font-size:8px;opacity:.6}.streak-strip{display:flex;align-items:center;gap:7px;background:#fff;border-radius:12px;padding:8px 11px;margin:0 0 10px;box-shadow:0 3px 12px #1720330d;font-size:11px;font-weight:700}.streak-strip strong{font-size:14px}.strip-sep{opacity:.3}
+.game{padding:11px;border-radius:18px}.game-head{margin-bottom:2px}.board-label{font-size:10px;opacity:.45;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.active-clue{margin:8px 0 9px;min-height:58px;padding:9px 10px;border-radius:12px}.active-number{width:31px;height:31px;border-radius:8px}.active-clue p{font-size:13px}
+.grid{margin:8px auto 10px;gap:1px;border:3px solid #172033;border-radius:4px;padding:1px;box-shadow:0 5px 16px #17203318;touch-action:pan-x pan-y;overflow:auto}
+.cell-wrap{width:34px;height:34px}.cell{font-size:19px;padding:7px 1px}.cell.active-word{background:#e6f0ff}.cell.selected{background:#c7dcff!important;box-shadow:inset 0 0 0 2px #172033}
+.cell-number{left:2px;top:1px;font-size:8px}
+.controls{margin-top:6px}.hint-button,.direction-button{padding:10px;font-size:12px}
+.keyboard{margin:9px -2px 0;padding:8px 2px 7px;border-radius:13px;background:#eef2f7}.key-row{display:flex;justify-content:center;gap:4px;margin:4px 0}.key-row button{min-width:29px;height:38px;padding:0 7px;border:0;border-radius:7px;background:#fff;color:#172033;box-shadow:0 2px 5px #1720331c;font-weight:850;font-size:13px;touch-action:manipulation}.key-row button:active{transform:translateY(1px);background:#dbeafe}.key-row button[data-key="BACK"]{min-width:45px}
+.clues{margin-top:9px}.clues h2{font-size:15px;display:flex;justify-content:space-between;align-items:center}.clues h2 span{font-size:9px;font-weight:600;opacity:.45}.clue{padding:9px;font-size:12px}.clue small{font-size:9px}
+@media(max-width:500px){.app{padding:10px 8px 30px}.cell-wrap{width:31px;height:31px}.cell{font-size:17px}.key-row{gap:3px}.key-row button{min-width:27px;height:36px;padding:0 6px}.mini-stat{min-width:42px}}
+@media(max-width:360px){.cell-wrap{width:28px;height:28px}.cell{font-size:15px}.key-row button{min-width:24px;height:34px;padding:0 5px;font-size:12px}}
+body.dark .streak-strip{background:#151d31}.dark .cell.selected{background:#bfdbfe}
+body.dark .hint-button{background:#5b4a14;color:#fff}
