@@ -1,83 +1,36 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<title>Teka Teki Silang</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#3048a5"><title>Teka Teki Silang</title><link rel="stylesheet" href="style.css">
 </head>
 <body class="splash-active">
-<section id="introScreen" class="intro-screen" aria-label="Memuat permainan">
-  <div class="intro-content">
-    <div class="intro-icon">🧩</div>
-    <div class="intro-title">TEKA TEKI SILANG</div>
-    <div class="intro-level">LEVEL <strong id="introLevel">1</strong> / 500</div>
-    <div class="intro-loader"><span></span></div>
-    <div class="intro-loading">Memuat permainan...</div>
-  </div>
-</section>
+<section id="introScreen" class="intro-screen" aria-label="Memuat permainan"><div class="intro-content"><div class="intro-icon">🧩</div><div class="intro-title">TEKA TEKI SILANG</div><div class="intro-level">LEVEL <strong id="introLevel">1</strong> / 500</div><div class="intro-loader"><span></span></div><div class="intro-loading">Memuat permainan...</div></div></section>
 <main class="app">
 <header class="topbar">
-  <div class="brand">
-    <div class="eyebrow">🧩 TEKA TEKI SILANG</div>
-    <h1>Level <span id="levelNumber">1</span> <small>/ 500</small></h1>
-  </div>
-  <div class="top-actions">
-    <div class="mini-stat"><b id="score">0</b><span>⭐ Poin</span></div>
-    <div class="mini-stat"><b id="coins">100</b><span>🪙 Koin</span></div>
-    <button id="themeButton" class="icon-button" aria-label="Mode gelap">🌙</button>
-  </div>
+  <div class="top-score"><span>Point:</span> <strong id="score">0</strong></div>
+  <div class="game-title">TTS <strong>#<span id="levelNumber">1</span></strong></div>
+  <div class="top-score right"><span>Score:</span> <strong id="coins">0</strong></div>
 </header>
-
-<section class="streak-strip">
-  <span>🔥 Streak</span><strong id="streak">0</strong>
-  <span class="strip-sep">•</span><span id="progress">0 / 10</span>
-</section>
-
 <section class="game">
-  <div class="game-head">
-    <span class="badge" id="difficulty">🟢 Pemula</span>
-    <span class="board-label">Teka Teki Silang</span>
+  <div class="board-area">
+    <div class="game-head"><span class="badge" id="difficulty">🟢 Pemula</span><button id="themeButton" class="theme-button" aria-label="Mode gelap">🌙</button></div>
+    <div id="grid" class="grid" aria-label="Papan Teka Teki Silang"></div>
+    <button id="directionButton" class="direction-float" hidden>↔</button>
   </div>
-
-  <div class="active-clue" id="activeClue">
-    <span class="active-number" id="activeNumber">1</span>
-    <div>
-      <strong id="activeDirection">Mendatar</strong>
-      <p id="activeText">Tekan salah satu kotak untuk melihat soal.</p>
+  <section class="clue-panel">
+    <div class="active-clue" id="activeClue"><span class="active-number" id="activeNumber">1</span><div><strong id="activeDirection">Mendatar</strong><p id="activeText">Tekan salah satu kotak untuk melihat soal.</p></div></div>
+    <div class="keyboard" id="keyboard" aria-label="Papan ketik huruf">
+      <div class="key-row"><button data-key="Q">Q</button><button data-key="W">W</button><button data-key="E">E</button><button data-key="R">R</button><button data-key="T">T</button><button data-key="Y">Y</button><button data-key="U">U</button><button data-key="I">I</button><button data-key="O">O</button><button data-key="P">P</button></div>
+      <div class="key-row"><button data-key="A">A</button><button data-key="S">S</button><button data-key="D">D</button><button data-key="F">F</button><button data-key="G">G</button><button data-key="H">H</button><button data-key="J">J</button><button data-key="K">K</button><button data-key="L">L</button></div>
+      <div class="key-row"><button data-key="Z">Z</button><button data-key="X">X</button><button data-key="C">C</button><button data-key="V">V</button><button data-key="B">B</button><button data-key="N">N</button><button data-key="M">M</button><button data-key="BACK">⌫</button></div>
     </div>
-  </div>
-
-  <div id="grid" class="grid" aria-label="Papan Teka Teki Silang"></div>
-
-  <div class="controls">
-    <button id="hintButton" class="hint-button">💡 Petunjuk <span>-5 poin</span></button>
-    <button id="directionButton" class="direction-button" hidden>↔ Ganti arah</button>
-  </div>
-
-  <div class="keyboard" id="keyboard" aria-label="Papan ketik huruf">
-    <div class="key-row">
-      <button data-key="Q">Q</button><button data-key="W">W</button><button data-key="E">E</button><button data-key="R">R</button><button data-key="T">T</button><button data-key="Y">Y</button><button data-key="U">U</button><button data-key="I">I</button><button data-key="O">O</button><button data-key="P">P</button>
-    </div>
-    <div class="key-row">
-      <button data-key="A">A</button><button data-key="S">S</button><button data-key="D">D</button><button data-key="F">F</button><button data-key="G">G</button><button data-key="H">H</button><button data-key="J">J</button><button data-key="K">K</button><button data-key="L">L</button>
-    </div>
-    <div class="key-row">
-      <button data-key="Z">Z</button><button data-key="X">X</button><button data-key="C">C</button><button data-key="V">V</button><button data-key="B">B</button><button data-key="N">N</button><button data-key="M">M</button><button data-key="BACK">⌫</button>
-    </div>
-  </div>
-
-  <div class="clues">
-    <h2>Daftar Soal <span>Ketuk soal untuk memilih</span></h2>
-    <div id="clueList"></div>
-  </div>
-
-  <button id="checkButton" class="primary-button">✓ Periksa Jawaban</button>
-  <button id="nextButton" class="secondary-button" hidden>➡️ Level Berikutnya</button>
-  <p id="message" class="message" role="status"></p>
+    <div class="bottom-actions"><button id="hintButton" class="help-button">Bantu</button><button id="checkButton" class="check-button">Cek</button></div>
+    <div class="progress-line"><span id="progress">0 / 10 terjawab</span><span id="streak">🔥 0</span></div>
+    <div class="clues"><h2>Daftar Soal <span>Ketuk soal untuk memilih</span></h2><div id="clueList"></div></div>
+    <button id="nextButton" class="secondary-button" hidden>➡️ Level Berikutnya</button><p id="message" class="message" role="status"></p>
+  </section>
 </section>
 </main>
 <script src="app.js"></script>
-</body>
-</html>
+</body></html>
