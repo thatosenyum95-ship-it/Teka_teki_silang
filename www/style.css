@@ -1,1 +1,38 @@
-*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,sans-serif;background:#f4f7fb;color:#172033}.app{width:min(720px,100%);margin:auto;padding:18px 14px 40px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;opacity:.65}h1{font-size:25px;margin:4px 0}.icon-button{border:0;border-radius:50%;width:44px;height:44px;font-size:19px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}.stat{background:#fff;border-radius:15px;padding:10px;text-align:center;box-shadow:0 4px 14px #17203312}.stat strong,.stat span{display:block}.stat strong{font-size:19px}.stat span{font-size:11px;opacity:.65}.game{background:#fff;border-radius:22px;padding:16px;box-shadow:0 8px 25px #17203310}.game-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.game-head p{font-size:12px;opacity:.65}.badge{padding:6px 9px;border-radius:999px;background:#eef7ee;font-size:11px;font-weight:800}.grid{display:grid;grid-template-columns:repeat(6,42px);grid-auto-rows:42px;gap:3px;justify-content:center;margin:16px auto}.cell{width:42px;height:42px;border:1px solid #cbd5e1;border-radius:7px;text-align:center;font-size:21px;font-weight:800;text-transform:uppercase;background:#f8fafc}.cell:focus{outline:2px solid #172033}.block{background:#172033;border-color:#172033}.correct{background:#dcfce7;border-color:#22c55e}.wrong{background:#fee2e2;border-color:#ef4444}.clues h2{font-size:18px;margin:12px 0 8px}.clue{display:block;width:100%;border:0;border-radius:12px;background:#f4f7fb;padding:11px;margin:6px 0;text-align:left;font:inherit;font-size:13px}.clue b{margin-right:6px}.primary-button,.secondary-button{width:100%;border:0;border-radius:13px;padding:13px;margin-top:10px;font:inherit;font-weight:800;cursor:pointer}.primary-button{background:#172033;color:white}.secondary-button{background:#e8eef8;color:#172033}.message{text-align:center;min-height:22px;font-weight:700;font-size:13px;margin:12px 0 0}@media(max-width:400px){.grid{grid-template-columns:repeat(6,38px);grid-auto-rows:38px}.cell{width:38px;height:38px;font-size:19px}}body.dark{background:#0b1020;color:#f3f6fb}body.dark .stat,body.dark .game{background:#151d31}body.dark .icon-button,body.dark .clue,body.dark .secondary-button{background:#202a42;color:#f3f6fb}body.dark .cell{background:#111827;color:#f3f6fb;border-color:#475569}body.dark .block{background:#020617;border-color:#020617}body.dark .message{color:#f3f6fb}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,sans-serif;background:#f4f7fb;color:#172033}
+.app{width:min(760px,100%);margin:auto;padding:16px 12px 40px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;opacity:.65}
+h1{font-size:25px;margin:4px 0}
+.icon-button{border:0;border-radius:50%;width:44px;height:44px;font-size:19px;background:#fff;box-shadow:0 4px 12px #17203312}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat{background:#fff;border-radius:15px;padding:9px;text-align:center;box-shadow:0 4px 14px #17203312}
+.stat strong,.stat span{display:block}.stat strong{font-size:19px}.stat span{font-size:11px;opacity:.65}
+.game{background:#fff;border-radius:22px;padding:14px;box-shadow:0 8px 25px #17203310}
+.game-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.game-head p{font-size:12px;opacity:.65}.badge{padding:6px 9px;border-radius:999px;background:#eef7ee;font-size:11px;font-weight:800}
+.active-clue{display:flex;align-items:center;gap:10px;min-height:62px;margin:12px 0;padding:11px 12px;border-radius:14px;background:#f4f7fb}
+.active-number{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:#172033;color:#fff;font-weight:900}
+.active-clue strong{font-size:12px}.active-clue p{margin:3px 0 0;font-size:14px;font-weight:700}
+.grid{display:grid;gap:1px;justify-content:center;margin:14px auto;overflow:auto;max-width:100%;padding:3px;background:#172033;border-radius:5px}
+.cell-wrap{position:relative;width:32px;height:32px;background:#fff}
+.cell{width:100%;height:100%;border:0;border-radius:0;text-align:center;font-size:18px;font-weight:900;text-transform:uppercase;background:#fff;color:#172033;padding:6px 2px}
+.cell:focus{outline:none}.cell.selected{background:#dbeafe}.cell.active-word{background:#eff6ff}.cell.correct{background:#dcfce7}.cell.wrong{background:#fee2e2}.cell.hint{background:#fef3c7}
+.cell-number{position:absolute;left:2px;top:0;font-size:8px;font-weight:900;line-height:10px;pointer-events:none}
+.block{background:#172033!important}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.hint-button,.direction-button{border:0;border-radius:12px;padding:12px;font:inherit;font-weight:800;cursor:pointer}
+.hint-button{background:#fff3cd}.hint-button span{font-size:11px;opacity:.7}.direction-button{background:#e8eef8}
+.clues h2{font-size:18px;margin:14px 0 7px}.clue-list{display:grid;gap:6px}
+.clue{width:100%;border:0;border-radius:11px;background:#f4f7fb;padding:10px;text-align:left;font:inherit;font-size:13px;cursor:pointer}
+.clue.active{outline:2px solid #172033;background:#e8eef8}.clue b{margin-right:5px}.clue small{display:block;margin-top:2px;opacity:.65}
+.primary-button,.secondary-button{width:100%;border:0;border-radius:13px;padding:13px;margin-top:10px;font:inherit;font-weight:800;cursor:pointer}
+.primary-button{background:#172033;color:white}.secondary-button{background:#e8eef8;color:#172033}
+.message{text-align:center;min-height:22px;font-weight:700;font-size:13px;margin:12px 0 0}
+@media(max-width:500px){.cell-wrap{width:28px;height:28px}.cell{font-size:16px}.cell-number{font-size:7px}.grid{gap:1px}}
+body.dark{background:#0b1020;color:#f3f6fb}
+body.dark .stat,body.dark .game{background:#151d31}
+body.dark .icon-button,body.dark .active-clue,body.dark .clue,body.dark .direction-button,body.dark .secondary-button{background:#202a42;color:#f3f6fb}
+body.dark .cell-wrap,body.dark .cell{background:#f8fafc;color:#172033}
+body.dark .cell.active-word{background:#dbeafe}.dark .cell.selected{background:#bfdbfe}
+body.dark .block{background:#020617!important}.dark .hint-button{background:#5b4a14;color:#fff}
